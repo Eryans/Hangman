@@ -1,9 +1,9 @@
 /* ----------------------Variables--------------------- */
-let word = "Allohéahadidou";
+let words = ["manger","épée","anticonstitutionnellement","marine","union","soviétique","kebab"];
 let life = 0;
 let input = "";
 let inputRegex = /^[a-z|é|è|à|ù]$/i; // in doubt i added french caracters to add french words to the game
-let wordArr = word.toLocaleLowerCase().split("");
+let wordArr = chooseWord().toLocaleLowerCase().split("");
 let answerArr = wordArr.map(x => x = "_"); 
 
 /* -----------------------Logic------------------------ */
@@ -11,11 +11,13 @@ let answerArr = wordArr.map(x => x = "_");
 alert("Hello there ! Welcome to Jules's Hangman Game !")
 showRules();
 //chooseWord();
-while (!gameOver()){
+while (life > 0){
+    checkWord();
     input = takeInput();
-    checkWord(input);
+    compareInput(input);
     showResult();    
 }
+gameOver();
 
 /* -----------------------Functions------------------------ */
 
@@ -27,17 +29,27 @@ function showRules(){
                 life = 7;
                 break;
             case "R":
-                alert("Todo : Write game's rules");
+                alert(`You have 7 life, each time you enter a wrong letter you lose one.\n
+The game will choose a random french word.\n
+letter with an accent and the ones without are not considered the same.`);
                 showRules();
                 break;
             case "Q":
                 alert("See you soon !");
                 window.close();
+                break;
+            default:
+                showRules();
+                break;
         }
+    } else {
+        showRules();
     }
 }
 
-function chooseWord(){}
+function chooseWord(){
+    return words[Math.floor(Math.random() * words.length)];
+}
 
 function takeInput(){
     let playerInput = prompt("Enter a letter :");
@@ -48,7 +60,7 @@ function takeInput(){
     }
 }
 
-function checkWord(input){
+function compareInput(input){
     let hasFoundAnswer = false;
     for (let i = 0; i < wordArr.length; i++){
         if (wordArr[i] === input.toLowerCase()){
@@ -61,14 +73,22 @@ function checkWord(input){
     }
 }
 
-function showResult(){
-    alert(`${answerArr.join(" ")}`);
+function checkWord(){
+    (answerArr.join("").toLocaleLowerCase() === wordArr.join("").toLocaleLowerCase()) ? win() : false;
 }
 
-function replay(){}
+function showResult(){
+    alert(`${answerArr.join(" ")}\nYou have ${life} attempts left.`);
+}
+
+function replay(){
+    life = 7;
+}
 
 function gameOver(){
-    return (life > 0) ? false : true;
+    confirm("Sorry you lose !\nDo you want to play again ?") ? replay() : window.close() ;
 }
 
-function loseRound(){}
+function win(){
+    confirm("Congratulation you win !\nDo you want to play again ?") ? replay() : window.close() ;
+}
