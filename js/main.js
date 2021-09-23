@@ -6,20 +6,20 @@ let inputRegex = /^[a-z|é|è|à|ù]$/i; // in doubt i added french caracters to
 let wordArr = chooseWord().toLocaleLowerCase().split("");
 let answerArr = wordArr.map(x => x = "_"); 
 
-/* -----------------------Logic------------------------ */
+gameLoop();
 
-alert("Hello there ! Welcome to Jules's Hangman Game !")
-showRules();
-//chooseWord();
-while (life > 0){
-    checkWord();
-    input = takeInput();
-    compareInput(input);
-    showResult();    
+function gameLoop(){
+    alert("Hello there ! Welcome to Jules's Hangman Game !")
+    showRules();
+    //chooseWord();
+    while (life > 0){
+        checkWord();
+        input = takeInput();
+        compareInput(input);
+        showResult();    
+    }
+    gameOver();
 }
-gameOver();
-
-/* -----------------------Functions------------------------ */
 
 function showRules(){
     let input = prompt(`Choose an option :\n"S" to start a game. "R" to see game's rule. "Q" to quit`);
@@ -53,6 +53,7 @@ function chooseWord(){
 
 function takeInput(){
     let playerInput = prompt("Enter a letter :");
+    // Make sure input is a letter and only a letter
     if (inputRegex.test(playerInput)){
         return playerInput.toLocaleLowerCase();
     } else {
@@ -62,6 +63,7 @@ function takeInput(){
 
 function compareInput(input){
     let hasFoundAnswer = false;
+    // Replace hidden chars by corresponding letters 
     for (let i = 0; i < wordArr.length; i++){
         if (wordArr[i] === input.toLowerCase()){
           answerArr[i] = input.toUpperCase();
