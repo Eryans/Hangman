@@ -1,5 +1,4 @@
 /* ----------------------Variables--------------------- */
-let words = ["manger","épée","anticonstitutionnellement","marine","union","soviétique","kebab"];
 let life = 0;
 let input = "";
 let inputRegex = /^[a-z|é|è|à|ù]$/i; // in doubt i added french caracters to add french words to the game
@@ -11,7 +10,6 @@ gameLoop();
 function gameLoop(){
     alert("Hello there ! Welcome to Jules's Hangman Game !")
     showRules();
-    //chooseWord();
     while (life > 0){
         checkWord();
         input = takeInput();
@@ -19,6 +17,10 @@ function gameLoop(){
         showResult();    
     }
     gameOver();
+}
+
+function returnWordArray(){
+    return ["manger","épée","anticonstitutionnellement","marine","union","soviétique","kebab"];
 }
 
 function showRules(){
@@ -48,7 +50,7 @@ letter with an accent and the ones without are not considered the same.`);
 }
 
 function chooseWord(){
-    return words[Math.floor(Math.random() * words.length)];
+    return returnWordArray()[Math.floor(Math.random() * returnWordArray().length)];
 }
 
 function takeInput(){
