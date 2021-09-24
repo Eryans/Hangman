@@ -2,7 +2,7 @@
 initGame();
 
 function initGame(){
-    alert("Hello there ! Welcome to Jules's Hangman Game !")
+    alert("Hello there ! Welcome to Jules's Hangman Game !");
     showRules(getRegex());
 }
 
@@ -58,7 +58,7 @@ letter with an accent and the ones without are not considered the same.`);
 }
 
 function chooseWord(){
-    return returnWordArray()[Math.floor(Math.random() * returnWordArray().length)];
+    return returnWordArray()[Math.floor(Math.random() * returnWordArray().length)]; // Return random word from list.
 }
 
 function takeInput(inputRegex,answerArr,life){
@@ -73,7 +73,7 @@ function takeInput(inputRegex,answerArr,life){
 
 function compareInput(input,wordArr,answerArr,life){
     let hasFoundAnswer = false;
-    // Replace hidden chars by corresponding letters 
+    // Replace hidden chars by corresponding letters if there's a match.
     for (let i = 0; i < wordArr.length; i++){
         if (wordArr[i] === input.toLowerCase()){
           answerArr[i] = input.toUpperCase();
@@ -83,10 +83,11 @@ function compareInput(input,wordArr,answerArr,life){
     if (!hasFoundAnswer){
         return life-1;
     }
-    return life;
+    return life; // life is returned to update score.
 }
 
 function checkWord(answerArr,wordArr,life){
+    // check for victory conditions
     (answerArr.join("").toLocaleLowerCase() === wordArr.join("").toLocaleLowerCase()) ? gameOver(life,wordArr.join("")) : false;
 }
 
