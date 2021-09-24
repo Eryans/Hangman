@@ -9,14 +9,14 @@ function initGame(){
 function gameLoop(){
     let life = 7;
     let wordArr = chooseWord().toLocaleLowerCase().split("");
+    console.log(wordArr.join(""));
     let answerArr = hideWord(wordArr);
     while (life > 0){
         checkWord(answerArr,wordArr,life);
-        let input = takeInput(getRegex());
+        let input = takeInput(getRegex(),answerArr,life);
         life = compareInput(input,wordArr,answerArr,life);
-        showResult(answerArr,life);    
     }
-    gameOver(life);
+    gameOver(life,wordArr.join(""));
 }
 
 function getRegex(){
@@ -24,7 +24,7 @@ function getRegex(){
 }
 
 function hideWord(wordArr){
-    return wordArr.map(x => x = "_"); 
+    return wordArr.map(x => x = "_"); // We get the array containing the word and replace every letters by an underscore
 }
 
 function returnWordArray(){
@@ -61,8 +61,8 @@ function chooseWord(){
     return returnWordArray()[Math.floor(Math.random() * returnWordArray().length)];
 }
 
-function takeInput(inputRegex){
-    let playerInput = prompt("Enter a letter :");
+function takeInput(inputRegex,answerArr,life){
+    let playerInput = prompt(`Enter a letter:\n${answerArr.join(" ")}\nYou have ${life} attempts left.`);
     // Make sure input is a letter and only a letter
     if (inputRegex.test(playerInput)){
         return playerInput.toLocaleLowerCase();
@@ -87,20 +87,16 @@ function compareInput(input,wordArr,answerArr,life){
 }
 
 function checkWord(answerArr,wordArr,life){
-    (answerArr.join("").toLocaleLowerCase() === wordArr.join("").toLocaleLowerCase()) ? gameOver(life) : false;
-}
-
-function showResult(answerArr,life){
-    alert(`${answerArr.join(" ")}\nYou have ${life} attempts left.`);
+    (answerArr.join("").toLocaleLowerCase() === wordArr.join("").toLocaleLowerCase()) ? gameOver(life,wordArr.join("")) : false;
 }
 
 function replay(){
     gameLoop();
 }
 
-function gameOver(life){
+function gameOver(life,wordArr){
     let message = "";
     console.log(life);
-    (life > 1) ? message = "Congratulation you found the word !" : message = "Too bad, you didn't found the word...";
+    (life > 1) ? message = `Congratulation you found the word ${wordArr}!` : message = "Too bad, you didn't found the word...";
     confirm(`${message}\nDo you want to play again ?`) ? replay() : window.close() ;
 }
