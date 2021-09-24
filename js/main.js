@@ -94,6 +94,6 @@ function checkWord(answerArr,wordArr,life){
 function gameOver(life,wordArr){
     let message = "";
     console.log(life);
-    (life > 1) ? message = `Congratulation you found the word ${wordArr}!` : message = "Too bad, you didn't found the word...";
+    (life > 1) ? message = `Congratulation you found the word ${wordArr.toUpperCase}!` : message = "Too bad, you didn't found the word...";
     confirm(`${message}\nDo you want to play again ?`) ? gameLoop() : window.close() ;
 }
