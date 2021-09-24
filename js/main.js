@@ -1,11 +1,9 @@
-/* ----------------------Variables--------------------- */
-let inputRegex = /^[a-z|é|è|à|ù]$/i; // in doubt i added french caracters to add french words to the game
 
 initGame();
 
 function initGame(){
     alert("Hello there ! Welcome to Jules's Hangman Game !")
-    showRules();
+    showRules(getRegex());
 }
 
 function gameLoop(){
@@ -14,15 +12,17 @@ function gameLoop(){
     let answerArr = hideWord(wordArr);
     while (life > 0){
         checkWord(answerArr,wordArr,life);
-        let input = takeInput();
+        let input = takeInput(getRegex());
         life = compareInput(input,wordArr,answerArr,life);
         showResult(answerArr,life);    
     }
-    // if we get to that point that means the player has lost
-    // so we set life to 0
-    life = 0;
     gameOver(life);
 }
+
+function getRegex(){
+    return /^[a-z|é|è|à|ù]$/i; // in doubt i added french caracters to add french words to the game 
+}
+
 function hideWord(wordArr){
     return wordArr.map(x => x = "_"); 
 }
@@ -31,7 +31,7 @@ function returnWordArray(){
     return ["manger","épée","anticonstitutionnellement","marine","union","soviétique","kebab"];
 }
 
-function showRules(){
+function showRules(inputRegex){
     let input = prompt(`Choose an option :\n"S" to start a game. "R" to see game's rule. "Q" to quit`);
     if (inputRegex.test(input)){
         switch(input.toUpperCase()){
@@ -61,7 +61,7 @@ function chooseWord(){
     return returnWordArray()[Math.floor(Math.random() * returnWordArray().length)];
 }
 
-function takeInput(){
+function takeInput(inputRegex){
     let playerInput = prompt("Enter a letter :");
     // Make sure input is a letter and only a letter
     if (inputRegex.test(playerInput)){
