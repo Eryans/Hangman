@@ -67,7 +67,7 @@ function takeInput(inputRegex,answerArr,life){
     if (inputRegex.test(playerInput)){
         return playerInput.toLocaleLowerCase();
     } else {
-        takeInput();
+        gameLoop();
     }
 }
 
@@ -90,13 +90,9 @@ function checkWord(answerArr,wordArr,life){
     (answerArr.join("").toLocaleLowerCase() === wordArr.join("").toLocaleLowerCase()) ? gameOver(life,wordArr.join("")) : false;
 }
 
-function replay(){
-    gameLoop();
-}
-
 function gameOver(life,wordArr){
     let message = "";
     console.log(life);
     (life > 1) ? message = `Congratulation you found the word ${wordArr}!` : message = "Too bad, you didn't found the word...";
-    confirm(`${message}\nDo you want to play again ?`) ? replay() : window.close() ;
+    confirm(`${message}\nDo you want to play again ?`) ? gameLoop() : window.close() ;
 }
