@@ -1,32 +1,42 @@
-/* ----------------------Variables--------------------- */
-let words = ["manger","épée","anticonstitutionnellement","marine","union","soviétique","kebab"];
-let life = 0;
-let input = "";
-let inputRegex = /^[a-z|é|è|à|ù]$/i; // in doubt i added french caracters to add french words to the game
-let wordArr = chooseWord().toLocaleLowerCase().split("");
-let answerArr = wordArr.map(x => x = "_"); 
 
-/* -----------------------Logic------------------------ */
+initGame();
 
-alert("Hello there ! Welcome to Jules's Hangman Game !")
-showRules();
-//chooseWord();
-while (life > 0){
-    checkWord();
-    input = takeInput();
-    compareInput(input);
-    showResult();    
+function initGame(){
+    alert("Hello there ! Welcome to Jules's Hangman Game !")
+    showRules(getRegex());
 }
-gameOver();
 
-/* -----------------------Functions------------------------ */
+function gameLoop(){
+    let life = 7;
+    let wordArr = chooseWord().toLocaleLowerCase().split("");
+    let answerArr = hideWord(wordArr);
+    while (life > 0){
+        checkWord(answerArr,wordArr,life);
+        let input = takeInput(getRegex());
+        life = compareInput(input,wordArr,answerArr,life);
+        showResult(answerArr,life);    
+    }
+    gameOver(life);
+}
 
-function showRules(){
+function getRegex(){
+    return /^[a-z|é|è|à|ù]$/i; // in doubt i added french caracters to add french words to the game 
+}
+
+function hideWord(wordArr){
+    return wordArr.map(x => x = "_"); 
+}
+
+function returnWordArray(){
+    return ["manger","épée","anticonstitutionnellement","marine","union","soviétique","kebab"];
+}
+
+function showRules(inputRegex){
     let input = prompt(`Choose an option :\n"S" to start a game. "R" to see game's rule. "Q" to quit`);
     if (inputRegex.test(input)){
         switch(input.toUpperCase()){
             case "S":
-                life = 7;
+                gameLoop()
                 break;
             case "R":
                 alert(`You have 7 life, each time you enter a wrong letter you lose one.\n
@@ -48,11 +58,12 @@ letter with an accent and the ones without are not considered the same.`);
 }
 
 function chooseWord(){
-    return words[Math.floor(Math.random() * words.length)];
+    return returnWordArray()[Math.floor(Math.random() * returnWordArray().length)];
 }
 
-function takeInput(){
+function takeInput(inputRegex){
     let playerInput = prompt("Enter a letter :");
+    // Make sure input is a letter and only a letter
     if (inputRegex.test(playerInput)){
         return playerInput.toLocaleLowerCase();
     } else {
@@ -60,8 +71,9 @@ function takeInput(){
     }
 }
 
-function compareInput(input){
+function compareInput(input,wordArr,answerArr,life){
     let hasFoundAnswer = false;
+    // Replace hidden chars by corresponding letters 
     for (let i = 0; i < wordArr.length; i++){
         if (wordArr[i] === input.toLowerCase()){
           answerArr[i] = input.toUpperCase();
@@ -69,26 +81,26 @@ function compareInput(input){
         }
       }
     if (!hasFoundAnswer){
-        life--;
+        return life-1;
     }
+    return life;
 }
 
-function checkWord(){
-    (answerArr.join("").toLocaleLowerCase() === wordArr.join("").toLocaleLowerCase()) ? win() : false;
+function checkWord(answerArr,wordArr,life){
+    (answerArr.join("").toLocaleLowerCase() === wordArr.join("").toLocaleLowerCase()) ? gameOver(life) : false;
 }
 
-function showResult(){
+function showResult(answerArr,life){
     alert(`${answerArr.join(" ")}\nYou have ${life} attempts left.`);
 }
 
 function replay(){
-    life = 7;
+    gameLoop();
 }
 
-function gameOver(){
-    confirm("Sorry you lose !\nDo you want to play again ?") ? replay() : window.close() ;
-}
-
-function win(){
-    confirm("Congratulation you win !\nDo you want to play again ?") ? replay() : window.close() ;
+function gameOver(life){
+    let message = "";
+    console.log(life);
+    (life > 1) ? message = "Congratulation you found the word !" : message = "Too bad, you didn't found the word...";
+    confirm(`${message}\nDo you want to play again ?`) ? replay() : window.close() ;
 }
