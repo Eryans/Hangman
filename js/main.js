@@ -6,11 +6,11 @@ function initGame(){
     showRules(getRegex());
 }
 
-function gameLoop(){
+async function gameLoop(){
     let life = 7;
-    let wordArr = chooseWord().toLocaleLowerCase().split("");
+    let wordArr = await chooseWord();
     console.log(wordArr.join(""));
-    let answerArr = hideWord(wordArr);
+    let answerArr = wordArr.map(x => x = "_"); 
     while (life > 0){
         checkWord(answerArr,wordArr,life);
         let input = takeInput(getRegex(),answerArr,life);
@@ -25,10 +25,6 @@ function getRegex(){
 
 function hideWord(wordArr){
     return wordArr.map(x => x = "_"); // We get the array containing the word and replace every letters by an underscore
-}
-
-function returnWordArray(){
-    return ["manger","épée","anticonstitutionnellement","marine","union","soviétique","kebab"];
 }
 
 function showRules(inputRegex){
@@ -57,8 +53,11 @@ letter with an accent and the ones without are not considered the same.`);
     }
 }
 
-function chooseWord(){
-    return returnWordArray()[Math.floor(Math.random() * returnWordArray().length)]; // Return random word from list.
+async function chooseWord(){
+    let response = await fetch('../wordList.json');
+    let wordList = await response.json();
+    console.log(wordList[1]);
+    return wordList[Math.floor(Math.random() * wordList.length)].toLocaleLowerCase().split(""); // Return random word from list.
 }
 
 function takeInput(inputRegex,answerArr,life){
