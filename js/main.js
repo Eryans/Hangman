@@ -2,16 +2,16 @@
 initGame();
 
 function initGame(){
-    alert("Hello there ! Welcome to Jules's Hangman Game !");
-    showRules(getRegex());
+    alert("Hey salut vous !\nBienvenu sur le jeu du pendu de Jules !");
+    showRules();
 }
 
-function gameLoop(){
+async function gameLoop(){
     let life = 7;
-    let wordArr = chooseWord().toLocaleLowerCase().split("");
+    let wordArr = await chooseWord();
     console.log(wordArr.join(""));
-    let answerArr = hideWord(wordArr);
-    while (life > 0){
+    let answerArr = wordArr.map(x => x = "_"); 
+    while (life > 0 && answerArr.includes(("_"))){ // IT WORKS FINALLY !!!!!
         checkWord(answerArr,wordArr,life);
         let input = takeInput(getRegex(),answerArr,life);
         life = compareInput(input,wordArr,answerArr,life);
@@ -20,15 +20,7 @@ function gameLoop(){
 }
 
 function getRegex(){
-    return /^[a-z|é|è|à|ù]$/i; // in doubt i added french caracters to add french words to the game 
-}
-
-function hideWord(wordArr){
-    return wordArr.map(x => x = "_"); // We get the array containing the word and replace every letters by an underscore
-}
-
-function returnWordArray(){
-    return ["manger","épée","anticonstitutionnellement","marine","union","soviétique","kebab"];
+    return /^[a-z|é|è|à|ù|â|ê]$/i; // in doubt i added french caracters to add french words to the game. Edit : removed word with accent to ease gameplay. 
 }
 
 function showRules(){
@@ -51,12 +43,14 @@ function showRules(){
     }
 }
 
-function chooseWord(){
-    return returnWordArray()[Math.floor(Math.random() * returnWordArray().length)]; // Return random word from list.
+async function chooseWord(){
+    let response = await fetch('../wordList.json');
+    let wordList = await response.json();
+    return wordList[Math.floor(Math.random() * wordList.length)].toLocaleLowerCase().split(""); // Return random word from list.
 }
 
 function takeInput(inputRegex,answerArr,life){
-    let playerInput = prompt(`Enter a letter:\n${answerArr.join(" ")}\nYou have ${life} attempts left.`);
+    let playerInput = prompt(`Entrez une lettre :\n${answerArr.join(" ")}\nIl vous reste ${life} essaies.`);
     // Make sure input is a letter and only a letter
     if (inputRegex.test(playerInput)){
         return playerInput.toLocaleLowerCase();
@@ -88,6 +82,6 @@ function checkWord(answerArr,wordArr,life){
 function gameOver(life,wordArr){
     let message = "";
     console.log(life);
-    (life > 1) ? message = `Congratulation you found the word ${wordArr.toUpperCase()} !` : message = "Too bad, you didn't found the word...";
-    confirm(`${message}\nDo you want to play again ?`) ? gameLoop() : window.close() ;
+    (life > 1) ? message = `Bien joué ! Vous avez trouvé le mot ${wordArr.toUpperCase()} !` : message = "Dommage, vous n'avez pas trouvé le mot...";
+    confirm(`${message}\nVoulez vous rejouer une partie ?`) ? gameLoop() : window.close() ;
 }
