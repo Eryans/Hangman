@@ -10,7 +10,7 @@ async function gameLoop(){
     let life = 7;
     let wordArr = await chooseWord();
     console.log(wordArr.join(""));
-    let answerArr = wordArr.map(x => x = "_"); 
+    let answerArr = wordArr.map(x => x = "_"); // Hidding word 
     while (life > 0 && answerArr.includes(("_"))){ // IT WORKS FINALLY !!!!!
         let input = takeInput(getRegex(),answerArr,life);
         life = compareInput(input,wordArr,answerArr,life);
@@ -70,7 +70,7 @@ function compareInput(input,wordArr,answerArr,life){
     if (!hasFoundAnswer){
         return life-1;
     }
-    return life; // life is returned to update score.
+    return life; // life is always returned to avoid bug.
 }
 
 function gameOver(life,wordArr){
