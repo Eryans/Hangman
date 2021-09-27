@@ -11,13 +11,9 @@ async function gameLoop(){
     let wordArr = await chooseWord();
     console.log(wordArr.join(""));
     let answerArr = wordArr.map(x => x = "_"); 
-    while (life > 0){
+    while (life > 0 && answerArr.includes(("_"))){ // IT WORKS FINALLY !!!!!
         checkWord(answerArr,wordArr,life);
-        console.log(wordArr);
-        console.log(answerArr);
-        console.log("test");
         let input = takeInput(getRegex(),answerArr,life);
-        console.log("Input");
         life = compareInput(input,wordArr,answerArr,life);
     }
     gameOver(life,wordArr.join(""));
