@@ -13,7 +13,11 @@ async function gameLoop(){
     let answerArr = wordArr.map(x => x = "_"); 
     while (life > 0){
         checkWord(answerArr,wordArr,life);
+        console.log(wordArr);
+        console.log(answerArr);
+        console.log("test");
         let input = takeInput(getRegex(),answerArr,life);
+        console.log("Input");
         life = compareInput(input,wordArr,answerArr,life);
     }
     gameOver(life,wordArr.join(""));
@@ -21,10 +25,6 @@ async function gameLoop(){
 
 function getRegex(){
     return /^[a-z|é|è|à|ù|â|ê]$/i; // in doubt i added french caracters to add french words to the game. Edit : removed word with accent to ease gameplay. 
-}
-
-function hideWord(wordArr){
-    return wordArr.map(x => x = "_"); // We get the array containing the word and replace every letters by an underscore
 }
 
 function showRules(inputRegex){
