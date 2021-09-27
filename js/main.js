@@ -43,7 +43,6 @@ function showRules(){
     }
 }
 
-
 async function chooseWord(){
     let response = await fetch('../wordList.json');
     let wordList = await response.json();
