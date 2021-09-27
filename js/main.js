@@ -36,25 +36,24 @@ function showRules(inputRegex){
                 break;
             case "R":
                 alert(`Vous disposez de 7 essaies, chaque lettre erroné vous en retirera un.\nLe jeu choissira un mot français dans une liste au hasard.\n`);
-                showRules();
+                showRules(inputRegex);
                 break;
             case "Q":
                 alert("A une prochaine fois !");
                 window.close();
                 break;
             default:
-                showRules();
+                showRules(inputRegex);
                 break;
         }
     } else {
-        showRules();
+        showRules(inputRegex);
     }
 }
 
 async function chooseWord(){
     let response = await fetch('../wordList.json');
     let wordList = await response.json();
-    console.log(wordList[1]);
     return wordList[Math.floor(Math.random() * wordList.length)].toLocaleLowerCase().split(""); // Return random word from list.
 }
 
