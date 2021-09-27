@@ -31,29 +31,23 @@ function returnWordArray(){
     return ["manger","épée","anticonstitutionnellement","marine","union","soviétique","kebab"];
 }
 
-function showRules(inputRegex){
-    let input = prompt(`Choose an option :\n"S" to start a game. "R" to see game's rule. "Q" to quit`);
-    if (inputRegex.test(input)){
-        switch(input.toUpperCase()){
-            case "S":
-                gameLoop()
-                break;
-            case "R":
-                alert(`You have 7 life, each time you enter a wrong letter you lose one.\n
-The game will choose a random french word.\n
-letter with an accent and the ones without are not considered the same.`);
-                showRules();
-                break;
-            case "Q":
-                alert("See you soon !");
-                window.close();
-                break;
-            default:
-                showRules();
-                break;
-        }
-    } else {
-        showRules();
+function showRules(){
+    let input = prompt(`Choisissez une option :\n"J" pour lancer une partie. "R" pour afficher les règles. "Q" pour quitter`);
+    switch(input.toUpperCase()){
+        case "J":
+            gameLoop()
+            break;
+        case "R":
+            alert(`Vous disposez de 7 essaies, chaque lettre erroné vous en retirera un.\nLe jeu choissira un mot français dans une liste au hasard.\n`);
+            showRules();
+            break;
+        case "Q":
+            alert("A une prochaine fois !");
+            window.close();
+            break;
+        default:
+            showRules();
+            break;
     }
 }
 
