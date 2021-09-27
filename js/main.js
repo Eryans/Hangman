@@ -67,7 +67,7 @@ function takeInput(inputRegex,answerArr,life){
     if (inputRegex.test(playerInput)){
         return playerInput.toLocaleLowerCase();
     } else {
-        gameLoop();
+        takeInput(inputRegex,answerArr,life);
     }
 }
 
