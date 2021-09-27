@@ -12,7 +12,6 @@ async function gameLoop(){
     console.log(wordArr.join(""));
     let answerArr = wordArr.map(x => x = "_"); 
     while (life > 0 && answerArr.includes(("_"))){ // IT WORKS FINALLY !!!!!
-        checkWord(answerArr,wordArr,life);
         let input = takeInput(getRegex(),answerArr,life);
         life = compareInput(input,wordArr,answerArr,life);
     }
@@ -72,11 +71,6 @@ function compareInput(input,wordArr,answerArr,life){
         return life-1;
     }
     return life; // life is returned to update score.
-}
-
-function checkWord(answerArr,wordArr,life){
-    // check for victory conditions
-    (answerArr.join("").toLocaleLowerCase() === wordArr.join("").toLocaleLowerCase()) ? gameOver(life,wordArr.join("")) : false;
 }
 
 function gameOver(life,wordArr){
