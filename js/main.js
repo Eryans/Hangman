@@ -3,7 +3,7 @@ initGame();
 
 function initGame(){
     alert("Hey salut vous !\nBienvenu sur le jeu du pendu de Jules !");
-    showRules(getRegex());
+    showRules();
 }
 
 async function gameLoop(){
@@ -27,29 +27,26 @@ function getRegex(){
     return /^[a-z|é|è|à|ù|â|ê]$/i; // in doubt i added french caracters to add french words to the game. Edit : removed word with accent to ease gameplay. 
 }
 
-function showRules(inputRegex){
+function showRules(){
     let input = prompt(`Choisissez une option :\n"J" pour lancer une partie. "R" pour afficher les règles. "Q" pour quitter`);
-    if (inputRegex.test(input)){
-        switch(input.toUpperCase()){
-            case "J":
-                gameLoop()
-                break;
-            case "R":
-                alert(`Vous disposez de 7 essaies, chaque lettre erroné vous en retirera un.\nLe jeu choissira un mot français dans une liste au hasard.\n`);
-                showRules(inputRegex);
-                break;
-            case "Q":
-                alert("A une prochaine fois !");
-                window.close();
-                break;
-            default:
-                showRules(inputRegex);
-                break;
-        }
-    } else {
-        showRules(inputRegex);
+    switch(input.toUpperCase()){
+        case "J":
+            gameLoop()
+            break;
+        case "R":
+            alert(`Vous disposez de 7 essaies, chaque lettre erroné vous en retirera un.\nLe jeu choissira un mot français dans une liste au hasard.\n`);
+            showRules();
+            break;
+        case "Q":
+            alert("A une prochaine fois !");
+            window.close();
+            break;
+        default:
+            showRules();
+            break;
     }
 }
+
 
 async function chooseWord(){
     let response = await fetch('../wordList.json');
