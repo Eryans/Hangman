@@ -6,9 +6,8 @@ function initGame(){
     showRules();
 }
 
-async function gameLoop(){
+function gameLoop(wordArr){
     let life = 7;
-    let wordArr = await chooseWord();
     console.log(wordArr.join(""));
     let answerArr = wordArr.map(x => x = "_"); // Hidding word 
     while (life > 0 && answerArr.includes(("_"))){ // IT WORKS FINALLY !!!!!
@@ -26,7 +25,7 @@ function showRules(){
     let input = prompt(`Choisissez une option :\n"J" pour lancer une partie. "R" pour afficher les règles. "Q" pour quitter`);
     switch(input.toUpperCase()){
         case "J":
-            gameLoop()
+            chooseWord()
             break;
         case "R":
             alert(`Vous disposez de 7 essaies, chaque lettre erroné vous en retirera un.\nLe jeu choissira un mot français dans une liste au hasard.\n`);
@@ -43,9 +42,12 @@ function showRules(){
 }
 
 async function chooseWord(){
-    let response = await fetch('./wordList.json');
-    let wordList = await response.json();
-    return wordList[Math.floor(Math.random() * wordList.length)].toLocaleLowerCase().split(""); // Return random word from list.
+    fetch('./wordList.json').then(function(response){
+        response.json().then(function(data){
+           let wordArr = data[Math.floor(Math.random() * data.length)].toLocaleLowerCase().split(""); // Return random word from list.
+           gameLoop(wordArr);
+        });
+    }); 
 }
 
 function takeInput(inputRegex,answerArr,life){
@@ -77,5 +79,5 @@ function gameOver(life,wordArr){
     let message = "";
     console.log(life);
     (life > 1) ? message = `Bien joué ! Vous avez trouvé le mot ${wordArr.toUpperCase()} !` : message = "Dommage, vous n'avez pas trouvé le mot...";
-    confirm(`${message}\nVoulez vous rejouer une partie ?`) ? gameLoop() : window.close() ;
+    confirm(`${message}\nVoulez vous rejouer une partie ?`) ? showRules() : window.close() ;
 }
