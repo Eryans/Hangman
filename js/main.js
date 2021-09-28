@@ -43,7 +43,7 @@ function showRules(){
 }
 
 async function chooseWord(){
-    let response = await fetch('../wordList.json');
+    let response = await fetch('./wordList.json');
     let wordList = await response.json();
     return wordList[Math.floor(Math.random() * wordList.length)].toLocaleLowerCase().split(""); // Return random word from list.
 }
